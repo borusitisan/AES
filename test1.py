@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 
 S_box = [[0x63,0x7C,0x77,0x7B,0xF2,0x6B,0x6F,0xC5,0x30,0x01,0x67,0x2B,0xFE,0xD7,0xAB,0x76],
@@ -19,6 +18,7 @@ S_box = [[0x63,0x7C,0x77,0x7B,0xF2,0x6B,0x6F,0xC5,0x30,0x01,0x67,0x2B,0xFE,0xD7,
     [0x8C,0xA1,0x89,0x0D,0xBF,0xE6,0x42,0x68,0x41,0x99,0x2D,0x0F,0xB0,0x54,0xBB,0x16]]
 
 R_con = [0x00,0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+
 
 def bunkatsu(i_key):
     b = int(len(i_key)/4)
@@ -42,57 +42,21 @@ def subword(a):
 def rot(i_key_3,round_count): #inputは3番目の要素
     temp_l = []
     out_l = []
-
-    temp_list = bunkatsu(i_key_3)
-    #print(temp_list)
+    temp = format(i_key_3,'032b')
+    temp_list = bunkatsu(temp)
+    print(temp_list)
     temp_l.append(temp_list[1])
     temp_l.append(temp_list[2])
     temp_l.append(temp_list[3])
     temp_l.append(temp_list[0])
-    #print(temp_l)
+    print(temp_l)
     temp_l = [int(i,2) for i in temp_l]
-    #print(temp_l)
+    print(temp_l)
     
     for i in range(4):
         out_l.append(subword(temp_l[i]))
-        out_l[i] = format(out_l[i]^R_con[round_count],'08b')
-    output = ''.join(out_l)
-    return(output)
+        out_l[i] = out_l[i]^R_con[round_count]
+    print(out_l)
 
-def subkey(rot_sub,k_list):
-    out_list = []
-    out_list[0] = rot_sub^k_list[0]
-    out_list[1] = out_list[0]^k_list[1]
-    out_list[2] = out_list[1]^k_list[2]
-    out_list[3] = out_list[2]^k_list[3]
-    return(out_list)
-
-if __name__ == '__main__':
-    input_key = sys.argv[1]
-    sub_key = []
-    temp = []
-    input_key = bunkatsu(format(int(input_key,16),'b'))
-    for i in range(4):
-        temp.append(bunkatsu(input_key[i]))
-        for j in range(4):
-            temp[i][j] = int(temp[i][j],2)
-    sub_key.append(temp)
-    print("k0: ")
-    print(input_key)
-
-
-
-    temp_key = [[],[],[],[],[],[],[],[],[],[],[]]
-    for i in range(10):
-        if i is 0:
-            temp_key[i] = input_key
-        else:
-            for l in range(4):
-                temp_key[i][l] = format(temp_key[i][l]^int(input_key[l],2),'b')
-            print(temp_key)
-        temp_key[i] = [int(k,2) for k in temp_key[i]]
-        sub_rot_key = rot(input_key[3],i)
-        print(sub_rot_key)
-        for j in range(4):
-            temp_key[i+1].append(int(sub_rot_key,2)^int(input_key[j],2))
-        print(temp_key)
+a = (0xFA1DC0F2)
+rot(a,1)
