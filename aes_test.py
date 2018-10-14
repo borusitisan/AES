@@ -34,8 +34,8 @@ def subword(a):
     x = int(a[0:4],2)
     y = int(a[4:8],2)
     b = S_box[x][y]
-    a = int(a,2)
-    b = b^a
+    #a = int(a,2)
+    #b = b^a
 
     return(b)
 
@@ -60,39 +60,46 @@ def rot(i_key_3,round_count): #inputは3番目の要素
     return(output)
 
 def subkey(rot_sub,k_list):
+    rot_sub = int(rot_sub,2)
+    print("k")
+    print(k_list)
     out_list = []
-    out_list[0] = rot_sub^k_list[0]
-    out_list[1] = out_list[0]^k_list[1]
-    out_list[2] = out_list[1]^k_list[2]
-    out_list[3] = out_list[2]^k_list[3]
+    out_list.append(rot_sub^k_list[0])
+    print(out_list[0])
+    out_list.append(out_list[0]^k_list[1])
+    print(out_list[1])
+    out_list.append(out_list[1]^k_list[2])
+    print(out_list[2])
+    out_list.append(out_list[2]^k_list[3])
+    print(out_list[3])
     return(out_list)
 
 if __name__ == '__main__':
     input_key = sys.argv[1]
     sub_key = []
     temp = []
-    input_key = bunkatsu(format(int(input_key,16),'b'))
+    input_key = bunkatsu(format(int(input_key,16),'0128b'))
     for i in range(4):
         temp.append(bunkatsu(input_key[i]))
         for j in range(4):
             temp[i][j] = int(temp[i][j],2)
     sub_key.append(temp)
-    print("k0: ")
+    print("input_key: ")
     print(input_key)
 
 
 
     temp_key = [[],[],[],[],[],[],[],[],[],[],[]]
-    for i in range(10):
-        if i is 0:
+    for i in range(11):#10ラウンド
+        if i is 0:#最初のkey
             temp_key[i] = input_key
+            #print(temp_key)
+            temp_key[i] = [int(k,2) for k in temp_key[i]]
         else:
-            for l in range(4):
-                temp_key[i][l] = format(temp_key[i][l]^int(input_key[l],2),'b')
-            print(temp_key)
-        temp_key[i] = [int(k,2) for k in temp_key[i]]
-        sub_rot_key = rot(input_key[3],i)
+            temp_key[i] = subkey(sub_rot_key,temp_key[i-1])
+            #temp_key[i] = [int(k,2) for k in temp_key[i]]
+        #temp_key[i] = [int(k,2) for k in temp_key[i]]
+        sub_rot_key = rot(format(temp_key[i][3],'032b'),i)
         print(sub_rot_key)
-        for j in range(4):
-            temp_key[i+1].append(int(sub_rot_key,2)^int(input_key[j],2))
         print(temp_key)
+        print(i)
