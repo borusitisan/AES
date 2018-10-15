@@ -63,7 +63,8 @@ def subkey(rot_sub,k_list):
     return(out_list)
 
 if __name__ == '__main__':
-    input_key = sys.argv[1]
+    #input_key = sys.argv[1]
+    input_key = input('秘密鍵: ')
     sub_key = []
     temp = []
     input_key = bunkatsu(format(int(input_key,16),'0128b'))
