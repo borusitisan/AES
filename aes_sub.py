@@ -34,24 +34,18 @@ def subword(a):
     x = int(a[0:4],2)
     y = int(a[4:8],2)
     b = S_box[x][y]
-    #a = int(a,2)
-    #b = b^a
-
     return(b)
 
-def rot(i_key_3,round_count): #inputは3番目の要素
+def rot(i_key_3,round_count):
     temp_l = []
     out_l = []
 
     temp_list = bunkatsu(i_key_3)
-    #print(temp_list)
     temp_l.append(temp_list[1])
     temp_l.append(temp_list[2])
     temp_l.append(temp_list[3])
     temp_l.append(temp_list[0])
-    #print(temp_l)
     temp_l = [int(i,2) for i in temp_l]
-    #print(temp_l)
     
     for i in range(4):
         out_l.append(subword(temp_l[i]))
@@ -61,17 +55,11 @@ def rot(i_key_3,round_count): #inputは3番目の要素
 
 def subkey(rot_sub,k_list):
     rot_sub = int(rot_sub,2)
-    print("k")
-    print(k_list)
     out_list = []
     out_list.append(rot_sub^k_list[0])
-    print(out_list[0])
     out_list.append(out_list[0]^k_list[1])
-    print(out_list[1])
     out_list.append(out_list[1]^k_list[2])
-    print(out_list[2])
     out_list.append(out_list[2]^k_list[3])
-    print(out_list[3])
     return(out_list)
 
 if __name__ == '__main__':
@@ -84,22 +72,21 @@ if __name__ == '__main__':
         for j in range(4):
             temp[i][j] = int(temp[i][j],2)
     sub_key.append(temp)
-    print("input_key: ")
-    print(input_key)
 
-
+    
 
     temp_key = [[],[],[],[],[],[],[],[],[],[],[]]
     for i in range(11):#10ラウンド
         if i is 0:#最初のkey
             temp_key[i] = input_key
-            #print(temp_key)
             temp_key[i] = [int(k,2) for k in temp_key[i]]
         else:
             temp_key[i] = subkey(sub_rot_key,temp_key[i-1])
-            #temp_key[i] = [int(k,2) for k in temp_key[i]]
-        #temp_key[i] = [int(k,2) for k in temp_key[i]]
         sub_rot_key = rot(format(temp_key[i][3],'032b'),i)
-        print(sub_rot_key)
-        print(temp_key)
-        print(i)
+
+
+    for i in range(len(temp_key)):
+        for j in range(len(temp_key[i])):
+            temp_key[i][j] = format(temp_key[i][j],'032b')
+        temp_key[i] = ''.join(temp_key[i])
+    print(temp_key)

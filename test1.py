@@ -58,5 +58,8 @@ def rot(i_key_3,round_count): #inputは3番目の要素
         out_l[i] = out_l[i]^R_con[round_count]
     print(out_l)
 
-a = (0xFA1DC0F2)
-rot(a,1)
+data = [['1234'],['5678']]
+
+for i in range(len(data)):
+    data[i] = list(map(int,data[i]))
+print(data)
