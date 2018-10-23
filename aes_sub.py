@@ -62,9 +62,8 @@ def subkey(rot_sub,k_list):
     out_list.append(out_list[2]^k_list[3])
     return(out_list)
 
-if __name__ == '__main__':
-    #input_key = sys.argv[1]
-    input_key = input('秘密鍵: ')
+def sub_key_gen(input_key):
+    #input_key = input('秘密鍵: ')
     sub_key = []
     temp = []
     input_key = bunkatsu(format(int(input_key,16),'0128b'))
@@ -90,4 +89,5 @@ if __name__ == '__main__':
         for j in range(len(temp_key[i])):
             temp_key[i][j] = format(temp_key[i][j],'032b')
         temp_key[i] = ''.join(temp_key[i])
-    print(temp_key)
+    #print(temp_key)
+    return(temp_key)

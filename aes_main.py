@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import aes_sub
 
 
 def bunkatsu(i_key):
@@ -12,20 +13,42 @@ def bunkatsu(i_key):
         return(e)
 
 
-#arr = np.arange(9).reshape((3,3))
-#arr = arr.T
-#print(arr)
+def key_arr(i_key):
+    input_result = []
+    for i in range(4):
+        input_result += bunkatsu(i_key[i])
+    print(input_result)
+    for i in range(len(input_result)):
+        input_result[i] = int(input_result[i],16)
+    arr = np.array(input_result).reshape((4,4))
+    return(arr)
 
+#def aes_r(i_key,i_sub_key):
+
+def sub_arr(i_key):
+    k = format(int(i_key,2),'032x')
+    k = bunkatsu(k)
+    arr_s = key_arr(k)
+    return(arr_s)
 
 def aes_main():
     input_m = input('平文: ')
-    input_m = bunkatsu(input_m)
-    input_result = []
-    for i in range(4):
-        input_result += bunkatsu(input_m[i])
-    print(input_result)
-    arr = np.array(input_result, dtype='int32')#.reshape((4,4))
-    #arr = arr.T
-    print(arr)
+    input_s = input('秘密鍵: ')
+    sub_key = aes_sub.sub_key_gen(input_s)
 
+    print(sub_key)
+
+    input_m = bunkatsu(input_m)
+    
+    arr_m = key_arr(input_m)
+    arr_m = arr_m.T
+    
+    arr_s = sub_arr(sub_key[0])   
+
+    add_r = arr_m^arr_s
+    print(add_r)
+
+    for i in range(10):
+        np.vectorize(aes_sub.subword)(add_r)
+    
 aes_main()
