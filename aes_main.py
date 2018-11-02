@@ -31,12 +31,17 @@ def sub_arr(i_key):
     arr_s = key_arr(k)
     return(arr_s)
 
+def ShiftRows(result_array):
+    for i in range(4):
+        result_array[i] = np.roll(result_array[i],-i)
+    return(result_array)
+
 def aes_main():
     input_m = input('平文: ')
     input_s = input('秘密鍵: ')
     sub_key = aes_sub.sub_key_gen(input_s)
 
-    print(sub_key)
+    #print(sub_key)
 
     input_m = bunkatsu(input_m)
     
@@ -48,7 +53,11 @@ def aes_main():
     add_r = arr_m^arr_s
     print(add_r)
 
-    for i in range(10):
-        np.vectorize(aes_sub.subword)(add_r)
-    
+    #-----以下よりround処理
+    result_array = []
+    #for i in range(10):
+    result_array = np.vectorize(aes_sub.subword)(add_r)
+    result_array = ShiftRows(result_array)
+
+
 aes_main()
