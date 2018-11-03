@@ -35,6 +35,7 @@ def ShiftRows(result_array):
     for i in range(4):
         result_array[i] = np.roll(result_array[i],-i)
     return(result_array)
+    
 
 def aes_main():
     input_m = input('平文: ')
