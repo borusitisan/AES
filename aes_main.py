@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 import aes_sub
-import test1
+import Mix
 
 def bunkatsu(i_key):
     b = int(len(i_key)/4)
@@ -53,14 +53,13 @@ def aes_main():
 
     add_r = arr_m^arr_s
     print(add_r)
-
+    result_array = add_r
     #-----以下よりround処理
-    result_array = []
     #for i in range(10):
-    result_array = np.vectorize(aes_sub.subword)(add_r)
+    result_array = np.vectorize(aes_sub.subword)(result_array)
     result_array = ShiftRows(result_array)
     #result_array = result_array.tolist()
-    result_array = test1.MixColumns(result_array)
+    result_array = Mix.MixColumns(result_array)
     print(result_array)
 
 aes_main()
