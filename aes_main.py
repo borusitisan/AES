@@ -54,6 +54,7 @@ def aes_main():
     add_r = arr_m^arr_s
     print(add_r)
     result_array = add_r
+    
     #-----以下よりround処理
     #for i in range(10):
     result_array = np.vectorize(aes_sub.subword)(result_array)
