@@ -63,7 +63,8 @@ def subkey(rot_sub,k_list):
     return(out_list)
 
 def sub_key_gen(input_key):
-    #input_key = input('秘密鍵: ')
+
+    print("Generating Sub Key --------------------------------------------------")
     sub_key = []
     temp = []
     input_key = bunkatsu(format(int(input_key,16),'0128b'))
@@ -73,15 +74,25 @@ def sub_key_gen(input_key):
             temp[i][j] = int(temp[i][j],2)
     sub_key.append(temp)
 
-    
+    y = [[],[],[],[],[],[],[],[],[],[],[]]
 
     temp_key = [[],[],[],[],[],[],[],[],[],[],[]]
     for i in range(11):#10ラウンド
         if i is 0:#最初のkey
             temp_key[i] = input_key
             temp_key[i] = [int(k,2) for k in temp_key[i]]
+            print("\nサブ鍵k%d" % i)
+            print(temp_key[i])
+            for z in range(4):
+                y[i].append(format(temp_key[i][z],'032b'))
+            print(y[i])
         else:
             temp_key[i] = subkey(sub_rot_key,temp_key[i-1])
+            print("\nサブ鍵k%d" % i)
+            print(temp_key[i])
+            for z in range(4):
+                y[i].append(format(temp_key[i][z],'032b'))
+            print(y[i])
         sub_rot_key = rot(format(temp_key[i][3],'032b'),i)
 
 

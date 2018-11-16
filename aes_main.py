@@ -17,7 +17,7 @@ def key_arr(i_key):
     input_result = []
     for i in range(4):
         input_result += bunkatsu(i_key[i])
-    print(input_result)
+    #print(input_result)
     for i in range(len(input_result)):
         input_result[i] = int(input_result[i],16)
     arr = np.array(input_result).reshape((4,4))
@@ -37,7 +37,7 @@ def ShiftRows(result_array):
     return(result_array)
     
 
-def aes_main():
+if __name__ == '__main__':
     input_m = input('平文: ')
     input_s = input('秘密鍵: ')
     sub_key = aes_sub.sub_key_gen(input_s)
@@ -49,18 +49,34 @@ def aes_main():
     arr_m = key_arr(input_m)
     arr_m = arr_m.T
     
-    arr_s = sub_arr(sub_key[0])   
+    print("\n\n 平文")
+    print(arr_m)
 
+    arr_s = sub_arr(sub_key[0])   
+    print("\n\n サブ鍵")
+    print(arr_s)
     add_r = arr_m^arr_s
+
+    print("\n サブ鍵^平文")
     print(add_r)
     result_array = add_r
-    
+
     #-----以下よりround処理
-    #for i in range(10):
+    for i in range(9):
+        result_array = np.vectorize(aes_sub.subword)(result_array)
+        result_array = ShiftRows(result_array)
+        result_array = Mix.MixColumns(result_array)
+        arr_s = sub_arr(sub_key[i+1])
+        result_array = result_array^arr_s
+    
     result_array = np.vectorize(aes_sub.subword)(result_array)
     result_array = ShiftRows(result_array)
-    #result_array = result_array.tolist()
-    result_array = Mix.MixColumns(result_array)
+    arr_s = sub_arr(sub_key[10])
+    result_array = result_array^arr_s
     print(result_array)
+    c = ""
+    for i in range(4):
+        for j in range(4):
+            c += format(result_array[i][j],'08b')
 
-aes_main()
+    print(c)
