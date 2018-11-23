@@ -62,18 +62,34 @@ if __name__ == '__main__':
     result_array = add_r
 
     #-----以下よりround処理
-    for i in range(9):
+    for i in range(10):
+        j = i+1
+        print("----------------------------------------")
+        print("\nラウンド%d回目" % j)
         result_array = np.vectorize(aes_sub.subword)(result_array)
+        print("\nSubbyte処理")
+        print(result_array)
+
         result_array = ShiftRows(result_array)
+        print("\nShift処理")
+        print(result_array)
+
         result_array = Mix.MixColumns(result_array)
-        arr_s = sub_arr(sub_key[i+1])
+        print("\nMixColumns処理")
+        print(result_array)
+
+        arr_s = sub_arr(sub_key[i])
         result_array = result_array^arr_s
+        print("\nラウンド%d結果" % j)
+        print(result_array)
     
     result_array = np.vectorize(aes_sub.subword)(result_array)
     result_array = ShiftRows(result_array)
     arr_s = sub_arr(sub_key[10])
     result_array = result_array^arr_s
+    print("\n\n最終結果")
     print(result_array)
+    
     c = ""
     for i in range(4):
         for j in range(4):
