@@ -36,15 +36,8 @@ def ShiftRows(result_array):
         result_array[i] = np.roll(result_array[i],-i)
     return(result_array)
     
-
-if __name__ == '__main__':
-    input_m = input('平文: ')
-    input_s = input('秘密鍵: ')
-    sub_key = aes_sub.sub_key_gen(input_s)
-
-    #print(sub_key)
-
-    input_m = bunkatsu(input_m)
+def key_main(m,s):
+    input_m = bunkatsu(m)
     
     arr_m = key_arr(input_m)
     arr_m = arr_m.T
@@ -94,5 +87,24 @@ if __name__ == '__main__':
     for i in range(4):
         for j in range(4):
             c += format(result_array[i][j],'08b')
+    
+    return(c)
 
-    print(c)
+if __name__ == '__main__':
+    input_m = input('平文: ')
+    input_s = input('秘密鍵: ')
+    input_m = ''.join(input_m.split())
+    print(input_m)
+    sub_key = aes_sub.sub_key_gen(input_s)
+
+    result_key = []
+
+    #if len(input_m) % 32 is 0:
+    j = int(len(input_m)/32)
+
+    for k in range(j):
+        print(input_m[j * k:32 * (k+1)])
+        result_key += key_main(input_m[j * k:32 * (k+1)],sub_key)
+            
+
+    print(result_key)
