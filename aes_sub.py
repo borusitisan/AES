@@ -83,16 +83,22 @@ def sub_key_gen(input_key):
             temp_key[i] = [int(k,2) for k in temp_key[i]]
             print("\nサブ鍵k%d" % i)
             print(temp_key[i])
+            temp_str = ""
             for z in range(4):
                 y[i].append(format(temp_key[i][z],'032b'))
+                temp_str += format(temp_key[i][z],'08x')
             print(y[i])
+            print(temp_str)
         else:
             temp_key[i] = subkey(sub_rot_key,temp_key[i-1])
             print("\nサブ鍵k%d" % i)
             print(temp_key[i])
+            temp_str = ""
             for z in range(4):
                 y[i].append(format(temp_key[i][z],'032b'))
+                temp_str += format(temp_key[i][z],'08x')
             print(y[i])
+            print(temp_str)
         sub_rot_key = rot(format(temp_key[i][3],'032b'),i)
 
 

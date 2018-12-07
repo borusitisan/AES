@@ -42,45 +42,63 @@ def key_main(m,s):
     arr_m = key_arr(input_m)
     arr_m = arr_m.T
     
-    print("\n\n 平文")
-    print(arr_m)
+    print("\n 平文")
+    temp_arr = ""
+    for i in range(4):
+        for j in range(4):
+            temp_arr += format(arr_m[i][j],'02x')
+    print(temp_arr)
 
     arr_s = sub_arr(sub_key[0])   
-    print("\n\n サブ鍵")
-    print(arr_s)
+    print("サブ鍵")
+    temp_arr = ""
+    for i in range(4):
+        for j in range(4):
+            temp_arr += format(arr_s[i][j],'02x')
+    print(temp_arr)
     add_r = arr_m^arr_s
 
-    print("\n サブ鍵^平文")
-    print(add_r)
+    print("サブ鍵^平文")
+    temp_arr = ""
+    for i in range(4):
+        for j in range(4):
+            temp_arr += format(add_r[i][j],'02x')
+    print(temp_arr)
     result_array = add_r
 
     #-----以下よりround処理
     for i in range(10):
         j = i+1
         print("----------------------------------------")
-        print("\nラウンド%d回目" % j)
+        print("ラウンド%d回目" % j)
         result_array = np.vectorize(aes_sub.subword)(result_array)
-        print("\nSubbyte処理")
+        print("Subbyte処理")
         print(result_array)
+        temp_array = ""
+        for i in range(4):
+            for j in range(4):
+                temp_array += str(format(result_array[i][j],'02x'))
+        print(temp_array)
 
         result_array = ShiftRows(result_array)
-        print("\nShift処理")
+        print("Shift処理")
         print(result_array)
+        
 
         result_array = Mix.MixColumns(result_array)
-        print("\nMixColumns処理")
+        print("MixColumns処理")
         print(result_array)
 
         arr_s = sub_arr(sub_key[i])
         result_array = result_array^arr_s
-        print("\nラウンド%d結果" % j)
+        print("ラウンド%d結果" % j)
         print(result_array)
     
     result_array = np.vectorize(aes_sub.subword)(result_array)
     result_array = ShiftRows(result_array)
     arr_s = sub_arr(sub_key[10])
     result_array = result_array^arr_s
-    print("\n\n最終結果")
+    print("\n最終結果")
     print(result_array)
     
     c = ""
@@ -103,8 +121,8 @@ if __name__ == '__main__':
     j = int(len(input_m)/32)
 
     for k in range(j):
-        print(input_m[j * k:32 * (k+1)])
-        result_key += key_main(input_m[j * k:32 * (k+1)],sub_key)
+        print(input_m[32 * k:32 * (k+1)])
+        result_key.append(key_main(input_m[32 * k:32 * (k+1)],sub_key))
             
 
     print(result_key)
